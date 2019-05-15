@@ -4,11 +4,12 @@ import { inject, observer } from "mobx-react";
 import Box from "../../components/Box/Box";
 import { Route } from "react-router-dom";
 import HomeView from "../HomeView/HomeView";
+import pageLinks from './pageLinks'
 
 const DiningRoomView = ({ user }) => {
     return (
         <>
-
+        
         </>
     );
 };
