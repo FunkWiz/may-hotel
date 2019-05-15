@@ -16,7 +16,7 @@ const nestedRoutes = pageLinks.map(link => ({
 const RestaurantView = ({ user }) => {
   return (
     <>
-      {/* <PageHeading links={pageLinks} /> */}
+      <PageHeading links={pageLinks} />
       <RouteList routes={nestedRoutes} />
     </>
   );
