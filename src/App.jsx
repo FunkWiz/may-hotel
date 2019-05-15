@@ -7,7 +7,7 @@ import HomeView from "./views/HomeView/HomeView";
 import Layout from "./components/Layout/Layout";
 import UserStore from "./stores/UserStore";
 import MenuStore from "./stores/MenuStore";
-import DiningRoomView from "./views/DiningRoomView/DiningRoomView";
+import RestaurantView from "./views/RestaurantView/RestaurantView";
 
 const browserHistory = createBrowserHistory();
 const routingStore = new RouterStore();
@@ -26,7 +26,7 @@ const App = () => {
       <Router basename="/" history={history}>
         <Layout>
           <Route path="/" component={HomeView} exact />
-          <Route path="/dining-room" component={DiningRoomView} />
+          <Route path="/restaurant" component={RestaurantView} />
         </Layout>
       </Router>
     </Provider>

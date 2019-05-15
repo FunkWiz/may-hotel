@@ -28,3 +28,5 @@ const PageLinkItem = ({ title, targetUrl }) => (
         </Link>
     </li>
 )
+
+export default PageHeading;

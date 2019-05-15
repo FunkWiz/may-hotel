@@ -1,8 +1,6 @@
 import React from "react";
 import "./Box.scss";
 
-const Box = ({ children, className }) => (
-  <div className={`site-box ${className}`}>{children}</div>
-);
+const Box = ({ children }) => <div className="site-box">{children}</div>;
 
 export default Box;
