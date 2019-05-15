@@ -1,0 +1,26 @@
+.home-menu-item {
+  flex-basis: calc(50% - 30px);
+  margin: 20px 10px;
+}
+
+.home-menu-item-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #3d8af7;
+  margin: 0 auto 10px;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
+}
+
+.home-menu-item a {
+  display: inline-block;
+
+  &,
+  &:active,
+  &:visited {
+    text-decoration: none;
+    color: #000;
+  }
+}
