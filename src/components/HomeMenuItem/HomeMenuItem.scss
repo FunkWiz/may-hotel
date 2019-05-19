@@ -1,3 +1,5 @@
+@import "../../vars.scss";
+
 .home-menu-item {
   flex-basis: calc(50% - 30px);
   margin: 20px 10px;
@@ -7,7 +9,7 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background-color: #3d8af7;
+  background-color: $secondary;
   margin: 0 auto 10px;
   display: flex;
   align-items: center;

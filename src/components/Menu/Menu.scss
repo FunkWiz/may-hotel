@@ -1,3 +1,5 @@
+@import "../../vars.scss";
+
 .site-menu {
   position: fixed;
   top: 0;
@@ -45,11 +47,11 @@
 
 .menu-item {
   &:not(:last-child) {
-    border-bottom: 1px solid #4f78c3;
+    border-bottom: 1px solid $secondary;
   }
   &.selected {
     .menu-item-link {
-      background-color: #4f78c3;
+      background-color: $secondary;
     }
   }
 }

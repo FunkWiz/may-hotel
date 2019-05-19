@@ -6,6 +6,7 @@ import HomeView from "./views/HomeView/HomeView";
 import Layout from "./components/Layout/Layout";
 import RestaurantView from "./views/RestaurantView/RestaurantView";
 import ServiceView from "./views/ServiceView/ServiceView";
+import CouponsView from "./views/CouponsView/CouponsView";
 
 const browserHistory = createBrowserHistory();
 
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/" component={HomeView} exact />
         <Route path="/restaurant" component={RestaurantView} />
         <Route path="/room-service" component={ServiceView} />
+        <Route path="/coupons" component={CouponsView} />
       </Layout>
     </Router>
   );

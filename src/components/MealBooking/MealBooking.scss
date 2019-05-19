@@ -1,5 +1,7 @@
+@import "../../vars.scss";
+
 .meal-disclaimer {
-  border-bottom: 2px solid #4f78c3;
+  border-bottom: 2px solid $primary;
   p {
     font-size: 14px;
     line-height: 1.2;

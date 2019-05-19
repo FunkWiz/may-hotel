@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Form from '../../../components/Form/Form';
 import FormField from '../../../components/FormField/FormField';
-import Select from '../../../components/Select/Select';
 import { getDateRange } from '../../../utils/helpers';
 import Box from '../../../components/Box/Box';
 import SubmitButton from '../../../components/SubmitButton/SubmitButton';
