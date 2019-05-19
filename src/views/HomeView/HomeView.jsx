@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./HomeView.scss";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import Box from "../../components/Box/Box";
 import HomeMenuList from "../../components/HomeMenuList/HomeMenuList";
+import MenuStore from "../../stores/MenuStore";
 
-const HomeView = ({ user, menu }) => {
+const HomeView = () => {
+  const menu = useContext(MenuStore);
   return (
     <>
       <div className="home-upper" />
@@ -15,4 +17,4 @@ const HomeView = ({ user, menu }) => {
   );
 };
 
-export default inject("user", "menu")(observer(HomeView));
+export default observer(HomeView);
