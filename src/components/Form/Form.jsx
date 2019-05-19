@@ -1,7 +1,14 @@
 import React from "react";
 
-export default () => ({ children, onSubmit }) => (
-  <form className="site-form" onSubmit={onSubmit}>
-    {children}
-  </form>
-);
+export default ({ children, onSubmit }) => {
+  const _onSubmit = event => {
+    event.preventDefault();
+    if (typeof onSubmit === 'function') onSubmit();
+  }
+
+  return (
+    <form className="site-form" onSubmit={_onSubmit}>
+      {children}
+    </form>
+  );
+}

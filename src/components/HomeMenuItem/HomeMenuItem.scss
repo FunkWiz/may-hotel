@@ -3,15 +3,18 @@
   margin: 20px 10px;
 }
 
-.home-menu-item-icon {
+.home-menu-item-icon-wrapper {
   width: 90px;
   height: 90px;
   border-radius: 50%;
   background-color: #3d8af7;
   margin: 0 auto 10px;
-  background-repeat: no-repeat;
-  background-size: 50%;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-menu-item-icon {
+  max-width: 50%;
 }
 
 .home-menu-item a {

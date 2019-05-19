@@ -8,7 +8,7 @@ const HomeView = ({ user, menu }) => {
   return (
     <>
       <div className="home-upper" />
-      <Box>
+      <Box className="home-view">
         <HomeMenuList list={menu.items} />
       </Box>
     </>

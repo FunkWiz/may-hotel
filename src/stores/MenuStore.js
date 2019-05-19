@@ -1,10 +1,12 @@
 import { observable, decorate } from "mobx";
-import menuItems from '../utils/menuItems'
+import menuItems from "../utils/menuItems";
 
 export default class MenuStore {
-    items = menuItems
+  active = false;
+  items = menuItems;
 }
 
 decorate(MenuStore, {
-    items: observable
-})
+  active: observable,
+  items: observable
+});

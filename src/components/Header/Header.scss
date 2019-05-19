@@ -1,8 +1,35 @@
 .site-header {
   height: 40px;
-  background: #aaaaaa;
+  background: #4f78c3;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+}
+
+.site-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px;
+}
+
+.site-header-user-icon {
+  img {
+    width: 30px;
+  }
+}
+
+.site-header-logo {
+  a {
+    font-weight: 700;
+    font-size: 20px;
+    &,
+    &:hover,
+    &:visited {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
 }

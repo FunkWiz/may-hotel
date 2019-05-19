@@ -8,6 +8,7 @@ import Layout from "./components/Layout/Layout";
 import UserStore from "./stores/UserStore";
 import MenuStore from "./stores/MenuStore";
 import RestaurantView from "./views/RestaurantView/RestaurantView";
+import ServiceView from "./views/ServiceView/ServiceView";
 
 const browserHistory = createBrowserHistory();
 const routingStore = new RouterStore();
@@ -27,6 +28,7 @@ const App = () => {
         <Layout>
           <Route path="/" component={HomeView} exact />
           <Route path="/restaurant" component={RestaurantView} />
+          <Route path="/room-service" component={ServiceView} />
         </Layout>
       </Router>
     </Provider>

@@ -1,6 +1,5 @@
 import React from "react";
-import "./RestaurantView.scss";
-import { inject, observer } from "mobx-react";
+import "./ServiceView.scss";
 import PageHeading from "../../components/PageHeading/PageHeading";
 import RouteList from "../../components/RouteList/RouteList";
 import { pageLinks, metadata } from "./consts";
@@ -10,15 +9,15 @@ const nestedRoutes = pageLinks.map(link => ({
   component: link.component
 }));
 
-const RestaurantView = ({ user }) => {
+const ServiceView = () => {
   return (
     <>
       <PageHeading title={metadata.title} icon={metadata.icon} links={pageLinks} />
-      <div className="restaurant-view">
+      <div className="service-view">
         <RouteList routes={nestedRoutes} />
       </div>
     </>
   );
 };
 
-export default inject("user")(observer(RestaurantView));
+export default ServiceView;

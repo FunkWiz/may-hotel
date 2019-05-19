@@ -5,13 +5,10 @@ import { Link } from "react-router-dom";
 const HomeMenuItem = ({ title, iconUrl, urlTarget }) => (
   <li className="home-menu-item">
     <Link className="home-menu-item-link" to={urlTarget}>
-      <div
-        className="home-menu-item-icon"
-        style={{
-          backgroundImage: `url(${iconUrl})`
-        }}
-      />
-      <span className="home-menu-item-title">{title}</span>
+      <div className="home-menu-item-icon-wrapper">
+        <img className="site-icon home-menu-item-icon" src={iconUrl} />
+      </div>
+      <span className="home-menu-item-title"> {title}</span>
     </Link>
   </li>
 );
