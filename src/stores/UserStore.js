@@ -1,7 +1,8 @@
 import { observable, computed, action, decorate } from "mobx";
-import { UserApi } from '../utils/api'
+import { UserApi } from '../utils/api';
+import { createContext } from "react";
 
-export default class UserStore {
+class UserStore {
     async login() {
         const _user = await UserApi.get(2);
         if (_user == null) return;
@@ -18,3 +19,5 @@ decorate(UserStore, {
     login: action,
     user: observable
 })
+
+export default createContext(new UserStore());

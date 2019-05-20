@@ -63,7 +63,7 @@ const QrCode = ({ qrImage }) => (
         <Box>
             <h3 className="qr-code-title">{qrCode.title}</h3>
             <div className="qr-code-image-wrapper">
-                <img src={qrImage} className="qr-code-image" />
+                <img src={qrImage} className="qr-code-image" alt="qr code" />
             </div>
             <div>
                 <p className="qr-code-disclaimer">{qrCode.disclaimer}</p>
