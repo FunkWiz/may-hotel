@@ -21,13 +21,13 @@ const App = () => {
   return (
     <Router basename="/" history={history}>
       <Layout>
-        <Route path="/" component={HomeView} exact />
         <Route path="/login" component={LoginView} />
+        <ProtectedRoute path="/" component={HomeView} exact />
         <ProtectedRoute path="/restaurant" component={RestaurantView} />
-        <Route path="/room-service" component={ServiceView} />
-        <Route path="/coupons" component={CouponsView} />
-        <Route path="/spa" component={SpaView} />
-        <Route path="/events" component={EventsView} />
+        <ProtectedRoute path="/room-service" component={ServiceView} />
+        <ProtectedRoute path="/coupons" component={CouponsView} />
+        <ProtectedRoute path="/spa" component={SpaView} />
+        <ProtectedRoute path="/events" component={EventsView} />
       </Layout>
     </Router>
   );

@@ -16,6 +16,9 @@
   align-items: center;
   height: 100%;
   padding: 0 10px;
+  &.anonymous {
+    justify-content: center;
+  }
 }
 
 .site-header-user-icon {
