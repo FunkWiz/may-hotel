@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./CouponsView.scss";
 import PageHeading from "../../components/PageHeading/PageHeading";
 import { metadata, pageLinks, coupons, qrCode } from "./consts";
 import Box from "../../components/Box/Box";
+import UserStore from "../../stores/UserStore";
+import { UserApi } from "../../utils/api";
 
 const CouponsView = () => {
     return (
@@ -15,15 +17,24 @@ const CouponsView = () => {
     );
 };
 
-const mockQrImage = 'http://chart.apis.google.com/chart?chs=300x300&cht=qr&chld=|0&chl=http%3A%2F%2Fwww.the-qrcode-generator.com%2F';
 const Coupons = () => {
-    const [qrImage, setQrImage] = useState(mockQrImage);
     const [showQrCode, setShowQrCode] = useState(false);
+    const userStore = useContext(UserStore);
+    const { user } = userStore.user;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await UserApi.vouchers();
+            console.log(result);
+        }
+
+        fetchData();
+    }, [])
 
     if (showQrCode) {
         return (
             <Box>
-                <QrCode qrImage={qrImage} />
+                <QrCode qrImage={user.qrcode} />
             </Box>
         )
     }

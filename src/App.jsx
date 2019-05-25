@@ -8,9 +8,11 @@ import RestaurantView from "./views/RestaurantView/RestaurantView";
 import ServiceView from "./views/ServiceView/ServiceView";
 import CouponsView from "./views/CouponsView/CouponsView";
 import SpaView from "./views/SpaView/SpaView";
-import EventsView from "./views/SpaView/SpaView";
+import EventsView from "./views/EventsView/EventsView";
 import LoginView from "./views/LoginView/LoginView";
 import ProtectedRoute from "./components/Routes/ProtectedRoute";
+import SignUpView from "./views/SignUpView/SignUpView";
+import AnonymousRoute from "./components/Routes/AnonymousRoute";
 
 const browserHistory = createBrowserHistory();
 
@@ -21,7 +23,8 @@ const App = () => {
   return (
     <Router basename="/" history={history}>
       <Layout>
-        <Route path="/login" component={LoginView} />
+        <AnonymousRoute path="/login" component={LoginView} />
+        <AnonymousRoute path="/signup" component={SignUpView} />
         <ProtectedRoute path="/" component={HomeView} exact />
         <ProtectedRoute path="/restaurant" component={RestaurantView} />
         <ProtectedRoute path="/room-service" component={ServiceView} />

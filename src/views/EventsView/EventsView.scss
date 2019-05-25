@@ -1,0 +1,36 @@
+@import "../../vars.scss";
+
+.event-item {
+  margin-bottom: 20px;
+  border-radius: 7px;
+  color: #fff;
+  background-color: $primary;
+  padding: 10px;
+
+  &.full {
+    opacity: 0.6;
+  }
+}
+
+.event-item-top {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.event-item-name {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.event-item-details {
+  font-size: 11px;
+}
+
+.event-item-content {
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.2;
+}

@@ -3,7 +3,7 @@ import React from "react";
 export default ({ children, onSubmit }) => {
   const _onSubmit = event => {
     event.preventDefault();
-    if (typeof onSubmit === 'function') onSubmit();
+    if (typeof onSubmit === 'function') onSubmit(event);
   }
 
   return (

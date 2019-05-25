@@ -29,8 +29,12 @@ export const pageLinks = [
 
 export const mealSettings = {
   breakfast: {
+    id: "5ce2b26024cd0935e47cb7ff",
     maxGuests: 4,
-    times: generateTimes(8, 11)
+    times: generateTimes(8, 11),
+    modalSuccess: {
+      title: 'ארוחת בוקר'
+    }
   },
   lunch: {
     maxGuests: 4,

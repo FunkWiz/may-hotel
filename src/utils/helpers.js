@@ -11,6 +11,19 @@ export const getDateRange = (startDate, daysCount) => {
     );
 };
 
+export const getDateRangeByDate = (startDate, endDate) => {
+  const _startDate = moment(startDate).add(1, 'days');
+  const _endDate = moment(endDate).add(2, 'days');
+  const daysCount = Math.abs(_startDate.diff(_endDate, "days"));
+  return Array(daysCount)
+    .fill()
+    .map((_, idx) =>
+      moment(_startDate)
+        .add(idx, "days")
+        .toDate()
+    );
+};
+
 export const generateNormalizedArray = count => {
   return Array(count)
     .fill()
