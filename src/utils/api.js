@@ -41,7 +41,7 @@ const http = {
 
 export const UserApi = {
   get: async userId => await http.get(`users/${userId}`),
-  me: async () => await http.get('users/me', true),
+  me: async () => await http.get("users/me", true),
   login: async (email, password) =>
     await http.post(`users/login`, { email, password }),
   signUp: async (email, password, firstName, lastName, address, phone) =>
@@ -86,5 +86,32 @@ export const ServiceApi = {
 };
 
 export const EventsApi = {
-  get: async hotel_id => await http.get(`hotels/events/${hotel_id}`)
+  get: async hotel_id => await http.get(`hotels/events/${hotel_id}`),
+  add: async (event_id, amount) =>
+    await http.get(
+      "hotels/events/reservation",
+      {
+        event_id,
+        amount
+      },
+      true
+    )
+};
+
+export const MealsApi = {
+  get: async hotel_id => await http.get(`hotels/meals/${hotel_id}`)
+};
+
+export const SpaApi = {
+  get: async hotel_id => await http.get(`hotels/spa/${hotel_id}/available`)
+};
+
+export const VoucherApi = {
+  add: async (meal_id, user_id, date, value) =>
+    await http.post(`hotels/tables/orders/voucher`, {
+      meal_id,
+      user_id,
+      date,
+      value
+    })
 };

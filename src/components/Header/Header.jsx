@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Header.scss";
-import { user } from "../../utils/icons";
+import { user as userIcon } from "../../utils/icons";
 import { Link } from "react-router-dom";
 import MenuBurger from "../MenuBurger/MenuBurger";
 import { observer } from "mobx-react-lite";
@@ -18,10 +18,12 @@ const Header = () => {
 
 const HeaderContent = () => {
   const menu = useContext(MenuStore);
+  const { user } = useContext(UserStore).user;
   return (
     <div className="site-header-content">
       <div className="site-header-user-icon">
-        <img src={user} className="site-icon" alt="user icon" />
+        <img src={userIcon} className="site-icon" alt="user icon" />
+        <span>{user.firstname}</span>
       </div>
       <div className="site-header-logo">
         <Link to="/">

@@ -40,13 +40,14 @@ const AllEvents = () => {
   const { user } = useContext(UserStore).user;
 
   const handleSubmit = useCallback(
-    id => {
+    async id => {
       const _event = events.find(ev => ev._id === id);
-      if (_event.counter === 0) {
-        setModalText("אין מקום באירוע זה");
-        setModalOpen(true);
-        return;
-      }
+      await EventsApi.add(_event._id, 1);
+      // if (_event.counter === 0) {
+      //   setModalText("אין מקום באירוע זה");
+      //   setModalOpen(true);
+      //   return;
+      // }
     },
     [events]
   );
@@ -89,7 +90,6 @@ const AllEvents = () => {
       try {
         setLoading(true);
         const result = await EventsApi.get(user.hotel);
-        console.log(await UserApi.me());
         setSuccess(true);
         const _events = result.data.data;
         setEvents(_events);
@@ -136,8 +136,8 @@ const AllEvents = () => {
         {filteredEvents.length === 0 ? (
           <Box>לא נמצאו אירועים</Box>
         ) : (
-          <EventList events={filteredEvents} onItemClick={handleSubmit} />
-        )}
+            <EventList events={filteredEvents} onItemClick={handleSubmit} />
+          )}
       </Box>
       <SiteModal
         open={modalOpen}
@@ -163,7 +163,8 @@ const EventItem = ({
   location,
   string,
   content,
-  counter
+  counter,
+  capacity
 }) => {
   const _onClick = () => {
     onClick(_id);
@@ -171,7 +172,7 @@ const EventItem = ({
   return (
     <li
       onClick={_onClick}
-      className={classNames("event-item", { full: counter === 0 })}
+      className={classNames("event-item", { full: counter === capacity })}
     >
       <div className="event-item-top">
         <h3 className="event-item-name">{name}</h3>

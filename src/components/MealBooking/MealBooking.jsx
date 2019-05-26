@@ -9,6 +9,9 @@ import SubmitButton from "../SubmitButton/SubmitButton";
 import { generateNormalizedArray } from "../../utils/helpers";
 import UserStore from "../../stores/UserStore";
 import SiteModal from "../SiteModal/SiteModal";
+import Loader from 'react-loader';
+import moment from 'moment';
+import { OrderApi } from "../../utils/api";
 
 class MealBooking extends React.Component {
   constructor(props) {
@@ -16,26 +19,59 @@ class MealBooking extends React.Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleGuestsChange = this.handleGuestsChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
 
     this.state = {
-      date: props.defaultDate,
+      time: props.allowedTimes[0],
+      date: props.allowedDates[0],
       guests: 1,
       modalOpen: false,
       modalTitle: "",
-      modalText: ""
+      modalText: "",
+      loading: false
     };
+  }
+
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.mealId !== this.props.mealId) {
+      this.setState({
+        time: this.props.allowedTimes[0],
+        date: this.props.allowedDates[0]
+      });
+    }
   }
 
   async handleFormSubmit() {
     try {
+      const { date, time, guests } = this.state;
+      const { mealName, mealId } = this.props;
+      const userStore = this.context;
+      this.setState({ loading: true });
+      const _date = moment(date);
+      _date.hours(parseInt(time.split(':')[0]));
+      _date.minutes(parseInt(time.split(':')[1]));
+      const result = await OrderApi.add(userStore.hotelId, mealId, userStore.user.user._id, guests, _date);
       this.setState({
+        loading: false,
+        modalTitle: mealName,
         modalOpen: true,
-        modalTitle: this.props.modalSuccess.title,
-        modalText: "הזמנת ארוחה בהצלחה"
+        modalText: this.getMealSummary(mealName, date, time)
       });
     } catch (e) {
       console.log(e);
     }
+  }
+
+  handleTimeChange(event) {
+    this.setState({ time: event.target.value });
+  }
+
+  getMealSummary(mealName, date, time) {
+    return `נשמר לך שולחן ב${mealName} \n
+    שעה ${time}, תאריך ${moment(date).format('DD/MM/YYYY')}. 
+    להזכירך, השריון תקף לחצי שעה הראשונה של הארוחה בלבד
+   `;
   }
 
   handleGuestsChange(event) {
@@ -51,54 +87,61 @@ class MealBooking extends React.Component {
   }
 
   render() {
-    const { guests, date, modalOpen, modalText, modalTitle } = this.state;
-    const { maxGuests, allowedDates } = this.props;
+    const { guests, date, modalOpen, modalText, modalTitle, loading, time } = this.state;
+    const { maxGuests, allowedDates, allowedTimes } = this.props;
 
     return (
-      <div className="meal-booking">
-        <Form onSubmit={this.handleFormSubmit}>
-          <div className="meal-disclaimer">
-            <Box>
-              <p>
-                אורח יקר,
+      <Loader loaded={!loading}>
+        <div className="meal-booking">
+          <Form onSubmit={this.handleFormSubmit}>
+            <div className="meal-disclaimer">
+              <Box>
+                <p>
+                  אורח יקר,
                 <br />
-                באפשרותך לשריין מקום לארוחה לפי תאריך, שעה ומספר סועדים.
-                לידיעתך, השריון תקף לחצי שעה הראשונה של הארוחה בלבד.
+                  באפשרותך לשריין מקום לארוחה לפי תאריך, שעה ומספר סועדים.
+                  לידיעתך, השריון תקף לחצי שעה הראשונה של הארוחה בלבד.
               </p>
-            </Box>
-          </div>
-          <Box>
+              </Box>
+            </div>
             <Box>
-              <FormField title="בחר מספר אורחים">
-                <Select
-                  items={generateNormalizedArray(maxGuests)}
-                  value={guests}
-                  onChange={this.handleGuestsChange}
-                  name="guests"
-                />
-              </FormField>
+              <Box>
+                <FormField title="בחר מספר אורחים">
+                  <Select
+                    items={generateNormalizedArray(maxGuests)}
+                    value={guests}
+                    onChange={this.handleGuestsChange}
+                    name="guests"
+                  />
+                </FormField>
+              </Box>
+              <Box>
+                <FormField title="בחר תאריך">
+                  <DatePicker
+                    selected={date}
+                    onChange={this.handleDateChange}
+                    allowedDates={allowedDates}
+                  />
+                </FormField>
+              </Box>
+              <Box>
+                <FormField title="בחר שעה">
+                  <Select items={allowedTimes} value={time} onChange={this.handleTimeChange} />
+                </FormField>
+              </Box>
+              <Box>
+                <SubmitButton>הזמן</SubmitButton>
+              </Box>
             </Box>
-            <Box>
-              <FormField title="בחר תאריך">
-                <DatePicker
-                  selected={date}
-                  onChange={this.handleDateChange}
-                  allowedDates={allowedDates}
-                />
-              </FormField>
-            </Box>
-            <Box>
-              <SubmitButton>הזמן</SubmitButton>
-            </Box>
-          </Box>
-        </Form>
-        <SiteModal
-          open={modalOpen}
-          title={modalTitle}
-          text={modalText}
-          onClose={() => this.setState({ modalOpen: false })}
-        />
-      </div>
+          </Form>
+          <SiteModal
+            open={modalOpen}
+            title={modalTitle}
+            text={modalText}
+            onClose={() => this.setState({ modalOpen: false })}
+          />
+        </div>
+      </Loader>
     );
   }
 }

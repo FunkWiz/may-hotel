@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import "./SiteModal.scss";
+import Box from '../Box/Box';
 
 export default ({ title, text, open, onClose }) => (
     <>
@@ -15,7 +16,9 @@ export default ({ title, text, open, onClose }) => (
                     <h3 className="site-modal-title">{title}</h3>
                 </div>
                 <div className="site-modal-content">
-                    <p className="site-modal-text">{text}</p>
+                    <Box>
+                        <p className="site-modal-text">{text}</p>
+                    </Box>
                 </div>
                 <div className="site-modal-button-container">
                     <button className="site-modal-button" onClick={onClose}>אישור</button>

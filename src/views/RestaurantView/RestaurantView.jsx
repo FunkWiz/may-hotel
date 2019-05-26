@@ -1,22 +1,71 @@
-import React from "react";
+import React, { useEffect, useContext, useState, useCallback } from "react";
 import "./RestaurantView.scss";
 import PageHeading from "../../components/PageHeading/PageHeading";
-import RouteList from "../../components/RouteList/RouteList";
-import { pageLinks, metadata } from "./consts";
-
-const nestedRoutes = pageLinks.map(link => ({
-  path: link.path,
-  component: link.component
-}));
+import { metadata, names } from "./consts";
+import UserStore from "../../stores/UserStore";
+import { MealsApi } from "../../utils/api";
+import Loader from 'react-loader';
+import { getDateRangeByDate, generateTimes, getDateRange } from "../../utils/helpers";
+import MealBooking from "../../components/MealBooking/MealBooking";
 
 const RestaurantView = () => {
+  const userStore = useContext(UserStore);
+  const [loading, setLoading] = useState(false);
+  const [meals, setMeals] = useState([]);
+  const [meal, setMeal] = useState();
+  const [room, setRoom] = useState();
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const mealsResult = await MealsApi.get(userStore.hotelId);
+        const _meals = mealsResult.data.data;
+        setMeals(mealsResult.data.data);
+        const selectedMeal = _meals[0];
+        selectedMeal.selected = true;
+        setMeal(selectedMeal);
+        setRoom(await userStore.getRoomData());
+        setLoading(false);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
+
+  const handleLinkClick = useCallback(id => {
+    if (meal._id === id) return;
+    const _meal = meals.find(m => m._id === id);
+    const _meals = meals.map(m => ({
+      ...m,
+      selected: m._id === id
+    }));
+    setMeals(_meals);
+    setMeal(_meal);
+  }, [meal, meals]);
+
+  const _pageLinks = meals.map(meal => ({
+    title: names[meal.name.toLowerCase()] || meal.name,
+    id: meal._id,
+    selected: meal.selected
+  }));
+
+  const allowedTimes = meal ? generateTimes(parseInt(meal.startTime), parseInt(meal.endTime)) : ["08:00"];
+  const allowedDates = room ? getDateRangeByDate(new Date(), new Date(room.enddate))
+    : getDateRange(new Date(), 5);
   return (
-    <>
-      <PageHeading title={metadata.title} icon={metadata.icon} links={pageLinks} />
+    <Loader loaded={!loading}>
+      <PageHeading title={metadata.title} icon={metadata.icon} links={_pageLinks} isStatic onStaticClick={handleLinkClick} />
       <div className="restaurant-view">
-        <RouteList routes={nestedRoutes} />
+        <MealBooking
+          allowedTimes={allowedTimes}
+          allowedDates={allowedDates}
+          maxGuests={4}
+          mealId={meal ? meal._id : ''}
+          mealName={meal ? names[meal.name.toLowerCase()] : ''}
+        />
       </div>
-    </>
+    </Loader>
   );
 };
 

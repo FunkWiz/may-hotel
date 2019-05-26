@@ -6,6 +6,8 @@ import SubmitButton from "../../components/SubmitButton/SubmitButton";
 import UserStore from "../../stores/UserStore";
 import { Redirect } from "react-router-dom";
 import Loader from "react-loader";
+import Box from "../../components/Box/Box";
+
 class LoginForm extends React.Component {
   constructor() {
     super();
@@ -41,28 +43,32 @@ class LoginForm extends React.Component {
     if (context.isLoggedIn) return <Redirect to="/" />;
 
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <FormField title="דואר אלקטרוני">
-          <Input
-            value={this.state.email}
-            name="email"
-            onChange={this.handleInputChange}
-            dir="ltr"
-          />
-        </FormField>
-        <FormField title="סיסמה">
-          <Input
-            type="password"
-            name="password"
-            value={this.state.password}
-            onChange={this.handleInputChange}
-            dir="ltr"
-          />
-        </FormField>
+      <Box>
         <Loader loaded={!this.state.loading}>
-          <SubmitButton>התחבר</SubmitButton>
+          <Form onSubmit={this.handleSubmit}>
+            <FormField title="דואר אלקטרוני">
+              <Input
+                value={this.state.email}
+                name="email"
+                onChange={this.handleInputChange}
+                dir="ltr"
+              />
+            </FormField>
+            <FormField title="סיסמה">
+              <Input
+                type="password"
+                name="password"
+                value={this.state.password}
+                onChange={this.handleInputChange}
+                dir="ltr"
+              />
+            </FormField>
+
+            <SubmitButton>התחבר</SubmitButton>
+
+          </Form>
         </Loader>
-      </Form>
+      </Box>
     );
   }
 }
