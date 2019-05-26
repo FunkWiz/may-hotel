@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { RouterStore, syncHistoryWithStore } from "mobx-react-router";
 import HomeView from "./views/HomeView/HomeView";
@@ -12,6 +12,7 @@ import EventsView from "./views/EventsView/EventsView";
 import LoginView from "./views/LoginView/LoginView";
 import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import SignUpView from "./views/SignUpView/SignUpView";
+import LogoutView from "./views/LogoutView/LogoutView";
 import AnonymousRoute from "./components/Routes/AnonymousRoute";
 
 const browserHistory = createBrowserHistory();
@@ -31,6 +32,7 @@ const App = () => {
         <ProtectedRoute path="/coupons" component={CouponsView} />
         <ProtectedRoute path="/spa" component={SpaView} />
         <ProtectedRoute path="/events" component={EventsView} />
+        <ProtectedRoute path="/logout" component={LogoutView} />
       </Layout>
     </Router>
   );

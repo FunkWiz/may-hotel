@@ -1,7 +1,7 @@
 import { observable, computed, action, decorate } from "mobx";
 import { UserApi, RoomApi } from "../utils/api";
 import { createContext } from "react";
-import { get, set } from "../utils/storage";
+import { get, set, remove } from "../utils/storage";
 
 class UserStore {
   constructor() {
@@ -16,6 +16,12 @@ class UserStore {
     this.user = user;
     return this.user;
   }
+
+  logout() {
+    remove("user");
+    this.user = null;
+  }
+
   async signUp(email, password, firstName, lastName, address, phone) {
     await UserApi.signUp(email, password, firstName, lastName, address, phone);
   }
@@ -28,12 +34,14 @@ class UserStore {
     if (this.user) {
       return this.user.token;
     }
+    return null;
   }
 
   get hotelId() {
     if (this.user) {
       return this.user.user.hotel;
     }
+    return null;
   }
 
   get isLoggedIn() {
@@ -44,6 +52,7 @@ class UserStore {
 decorate(UserStore, {
   isLoggedIn: computed,
   login: action,
+  logout: action,
   signUp: action,
   getRoomData: action,
   user: observable,

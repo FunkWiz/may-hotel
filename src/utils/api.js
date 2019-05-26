@@ -1,6 +1,5 @@
 import axios from "axios";
 import { get } from "./storage";
-import { async } from "q";
 
 const BASE_URL = "https://mayhotel.herokuapp.com";
 const generateUrl = path => `${BASE_URL}/${path}`;
@@ -20,7 +19,7 @@ const getHeaders = (authorized = false) => {
   if (authorized) {
     const token = getToken();
     if (token) {
-      headers.Authorization = `bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`;
     }
   }
   console.log(headers);
@@ -42,6 +41,7 @@ const http = {
 
 export const UserApi = {
   get: async userId => await http.get(`users/${userId}`),
+  me: async () => await http.get('users/me', true),
   login: async (email, password) =>
     await http.post(`users/login`, { email, password }),
   signUp: async (email, password, firstName, lastName, address, phone) =>

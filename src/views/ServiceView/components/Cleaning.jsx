@@ -46,7 +46,7 @@ const Cleaning = () => {
             setModalOpen(true);
         }
         setLoading(false);
-    }, [date, modal, user.room, loading]);
+    }, [date, modal, user.room]);
 
     useEffect(() => {
         (async () => {

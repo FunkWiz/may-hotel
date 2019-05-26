@@ -11,7 +11,7 @@ const HomeView = () => {
     <>
       <div className="home-upper" />
       <Box className="home-view">
-        <HomeMenuList list={menu.items} />
+        <HomeMenuList list={menu.homeItems} />
       </Box>
     </>
   );

@@ -5,7 +5,8 @@ import { getDateRange } from '../../../utils/helpers';
 
 const Breakfast = () => {
     const { breakfast } = mealSettings;
-    const allowedDates = getDateRange(new Date(), 15);
+    const allowedDates = getDateRange(new Date(), 5);
+    
     return (
         <div>
             <MealBooking

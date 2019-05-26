@@ -7,3 +7,7 @@ export const set = (key, value) => {
 export const get = key => {
   return JSON.parse(_storage.getItem(key));
 };
+
+export const remove = key => {
+  _storage.removeItem(key);
+};
