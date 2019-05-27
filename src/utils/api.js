@@ -22,7 +22,7 @@ const getHeaders = (authorized = false) => {
       headers.Authorization = `Bearer ${token}`;
     }
   }
-  console.log(headers);
+
   return headers;
 };
 
@@ -36,7 +36,12 @@ const http = {
       headers: getHeaders(auth)
     }),
   put: async (path, data) => await axios.put(generateUrl(path), data),
-  delete: async path => await axios.delete(generateUrl(path))
+  delete: async (path, data) =>
+    await axios.request({
+      url: generateUrl(path),
+      method: 'DELETE',
+      data: data
+    })
 };
 
 export const UserApi = {
@@ -53,9 +58,7 @@ export const UserApi = {
       address,
       phone
     }),
-  vouchers: async () => {
-    return await http.get("users/me", true);
-  }
+  events: async () => await http.get("users/me/events", true)
 };
 
 export const OrderApi = {
@@ -108,10 +111,14 @@ export const SpaApi = {
 
 export const VoucherApi = {
   add: async (meal_id, user_id, date, value) =>
-    await http.post(`hotels/tables/orders/voucher`, {
+    await http.post(`hotels/tables/orders/vouchers`, {
       meal_id,
       user_id,
       date,
       value
+    }),
+  delete: async voucher_id =>
+    await http.delete(`hotels/tables/orders/vouchers`, {
+      voucher_id
     })
 };

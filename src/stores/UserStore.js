@@ -21,13 +21,24 @@ class UserStore {
     remove("user");
     this.user = null;
   }
+  async updateUser() {
+    const result = await UserApi.me();
+    const user = result.data;
+    user.user = {...user.data, hote: this.user.hotel};
+    user.token = this.user.token;
+    set("user", user);
+    this.user = user;
+  }
 
   async signUp(email, password, firstName, lastName, address, phone) {
     await UserApi.signUp(email, password, firstName, lastName, address, phone);
   }
 
   async getRoomData() {
-    return this.room || (this.room = (await RoomApi.get(this.user.user.room)).data.data);
+    return (
+      this.room ||
+      (this.room = (await RoomApi.get(this.user.user.room)).data.data)
+    );
   }
 
   get token() {
@@ -54,6 +65,7 @@ decorate(UserStore, {
   login: action,
   logout: action,
   signUp: action,
+  updateUser: action,
   getRoomData: action,
   user: observable,
   token: computed,

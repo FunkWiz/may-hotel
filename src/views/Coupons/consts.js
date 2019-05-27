@@ -32,7 +32,7 @@ export const coupons = [
     title: "שובר ארוחה",
     location: "שירות חדרים",
     bgImage: roomServiceImage,
-    id: "ROOM_SERVICe"
+    id: "ROOM_SERVICE"
   }
 ];
 

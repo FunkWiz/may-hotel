@@ -6,7 +6,6 @@ import HomeView from "./views/HomeView/HomeView";
 import Layout from "./components/Layout/Layout";
 import RestaurantView from "./views/RestaurantView/RestaurantView";
 import ServiceView from "./views/ServiceView/ServiceView";
-import CouponsView from "./views/CouponsView/CouponsView";
 import SpaView from "./views/SpaView/SpaView";
 import EventsView from "./views/EventsView/EventsView";
 import LoginView from "./views/LoginView/LoginView";
@@ -29,7 +28,6 @@ const App = () => {
         <ProtectedRoute path="/" component={HomeView} exact />
         <ProtectedRoute path="/restaurant" component={RestaurantView} />
         <ProtectedRoute path="/room-service" component={ServiceView} />
-        <ProtectedRoute path="/coupons" component={CouponsView} />
         <ProtectedRoute path="/spa" component={SpaView} />
         <ProtectedRoute path="/events" component={EventsView} />
         <ProtectedRoute path="/logout" component={LogoutView} />

@@ -52,7 +52,7 @@ class MealBooking extends React.Component {
       _date.hours(parseInt(time.split(":")[0]));
       _date.minutes(parseInt(time.split(":")[1]));
       try {
-        const result = await OrderApi.add(
+        await OrderApi.add(
           userStore.hotelId,
           mealId,
           userStore.user.user._id,
@@ -111,7 +111,7 @@ class MealBooking extends React.Component {
       loading,
       time
     } = this.state;
-    const { maxGuests, allowedDates, allowedTimes } = this.props;
+    const { maxGuests, allowedDates, allowedTimes, mealId } = this.props;
 
     return (
       <Loader loaded={!loading}>
@@ -165,7 +165,10 @@ class MealBooking extends React.Component {
             open={modalOpen}
             title={modalTitle}
             text={modalText}
-            onClose={() => this.props.onFinishedOrder(this.state.success)}
+            onClose={() => this.props.onFinishedOrder(this.state.success, {
+              mealId,
+              date
+            })}
           />
         </div>
       </Loader>

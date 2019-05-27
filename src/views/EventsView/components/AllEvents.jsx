@@ -39,7 +39,8 @@ const AllEvents = () => {
   const [categories, setCategories] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState("");
-  const { user } = useContext(UserStore).user;
+  const userStore = useContext(UserStore);
+  const { user } = userStore.user;
 
   const handleSubmit = useCallback(
     async id => {
@@ -47,12 +48,13 @@ const AllEvents = () => {
       setLoading(true);
       try {
         await EventsApi.add(_event._id, 1);
-        setModalOpen(true);
+        await userStore.updateUser();
         setModalText("נרשמת לאירוע בהצלחה!");
+        setModalOpen(true);
         setSuccess(true);
       } catch (e) {
-        setModalOpen(true);
         setModalText("לא ניתן להירשם לאירוע זה");
+        setModalOpen(true);
       }
       setLoading(false);
     },
@@ -97,7 +99,6 @@ const AllEvents = () => {
       try {
         setLoading(true);
         const result = await EventsApi.get(user.hotel);
-        setSuccess(true);
         const _events = result.data.data;
         setEvents(_events);
         const _categories = _events
@@ -116,7 +117,7 @@ const AllEvents = () => {
       }
       setLoading(false);
     })();
-  }, [user.hotel]);
+  }, []);
 
   if (redirect) {
     return <Redirect to="/events/summary" />;
@@ -147,8 +148,8 @@ const AllEvents = () => {
         {filteredEvents.length === 0 ? (
           <Box>לא נמצאו אירועים</Box>
         ) : (
-          <EventList events={filteredEvents} onItemClick={handleSubmit} />
-        )}
+            <EventList events={filteredEvents} onItemClick={handleSubmit} />
+          )}
       </Box>
       <SiteModal
         open={modalOpen}

@@ -12,7 +12,7 @@ import {
 } from "../../utils/helpers";
 import MealBooking from "../../components/MealBooking/MealBooking";
 import { Redirect } from "react-router-dom";
-import CouponsView from "../CouponsView/CouponsView";
+import Coupons from "../Coupons/Coupons";
 
 const RestaurantView = () => {
   const userStore = useContext(UserStore);
@@ -22,6 +22,7 @@ const RestaurantView = () => {
   const [room, setRoom] = useState();
   const [goHome, setGoHome] = useState(false);
   const [goCoupons, setGoCoupons] = useState(false);
+  const [couponData, setCouponData] = useState({});
 
   useEffect(() => {
     (async () => {
@@ -68,11 +69,19 @@ const RestaurantView = () => {
     ? getDateRangeByDate(new Date(), new Date(room.enddate))
     : getDateRange(new Date(), 5);
 
-  const onFinishedOrder = success => {
+  const onFinishedOrder = (success, data) => {
     if (success) {
       setGoHome(true);
+    } else {
+      setCouponData(data);
+      setGoCoupons(true);
     }
   };
+
+
+  if (goCoupons) {
+    return <Coupons {...couponData} />
+  }
 
   if (goHome) {
     return <Redirect to="/" />;
