@@ -88,7 +88,7 @@ export const ServiceApi = {
 export const EventsApi = {
   get: async hotel_id => await http.get(`hotels/events/${hotel_id}`),
   add: async (event_id, amount) =>
-    await http.get(
+    await http.post(
       "hotels/events/reservation",
       {
         event_id,

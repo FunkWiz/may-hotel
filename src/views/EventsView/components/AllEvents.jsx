@@ -11,6 +11,7 @@ import DatePicker from "../../../components/DatePicker/DatePicker";
 import { eventTypes } from "../consts";
 import moment from "moment";
 import classNames from "classnames";
+import { Redirect } from "react-router-dom";
 
 const dateFormat = "DD/MM/YYYY";
 function onlyUnique(value, index, self) {
@@ -19,7 +20,7 @@ function onlyUnique(value, index, self) {
 
 const generateCategorySelect = categories => {
   return categories.map(cat => ({
-    text: eventTypes[cat],
+    text: eventTypes[cat] || cat,
     value: cat
   }));
 };
@@ -29,10 +30,11 @@ const AllEvents = () => {
     getDateRange(new Date(), 10)
   );
   const [success, setSuccess] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
   const [date, setDate] = useState(allowedDates[0]);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState("");
   let [filteredEvents, setFilteredEvents] = useState([]);
   const [categories, setCategories] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,12 +44,17 @@ const AllEvents = () => {
   const handleSubmit = useCallback(
     async id => {
       const _event = events.find(ev => ev._id === id);
-      await EventsApi.add(_event._id, 1);
-      // if (_event.counter === 0) {
-      //   setModalText("אין מקום באירוע זה");
-      //   setModalOpen(true);
-      //   return;
-      // }
+      setLoading(true);
+      try {
+        await EventsApi.add(_event._id, 1);
+        setModalOpen(true);
+        setModalText("נרשמת לאירוע בהצלחה!");
+        setSuccess(true);
+      } catch (e) {
+        setModalOpen(true);
+        setModalText("לא ניתן להירשם לאירוע זה");
+      }
+      setLoading(false);
     },
     [events]
   );
@@ -111,6 +118,10 @@ const AllEvents = () => {
     })();
   }, [user.hotel]);
 
+  if (redirect) {
+    return <Redirect to="/events/summary" />;
+  }
+
   return (
     <Loader loaded={!loading}>
       <Box>
@@ -136,14 +147,14 @@ const AllEvents = () => {
         {filteredEvents.length === 0 ? (
           <Box>לא נמצאו אירועים</Box>
         ) : (
-            <EventList events={filteredEvents} onItemClick={handleSubmit} />
-          )}
+          <EventList events={filteredEvents} onItemClick={handleSubmit} />
+        )}
       </Box>
       <SiteModal
         open={modalOpen}
         title="אירועים ופעילויות"
         text={modalText}
-        onClose={() => setModalOpen(false)}
+        onClose={() => (success ? setRedirect(true) : setModalOpen(false))}
       />
     </Loader>
   );

@@ -9,8 +9,8 @@ import SubmitButton from "../SubmitButton/SubmitButton";
 import { generateNormalizedArray } from "../../utils/helpers";
 import UserStore from "../../stores/UserStore";
 import SiteModal from "../SiteModal/SiteModal";
-import Loader from 'react-loader';
-import moment from 'moment';
+import Loader from "react-loader";
+import moment from "moment";
 import { OrderApi } from "../../utils/api";
 
 class MealBooking extends React.Component {
@@ -28,10 +28,10 @@ class MealBooking extends React.Component {
       modalOpen: false,
       modalTitle: "",
       modalText: "",
-      loading: false
+      loading: false,
+      success: false
     };
   }
-
 
   componentDidUpdate(prevProps) {
     if (prevProps.mealId !== this.props.mealId) {
@@ -49,15 +49,30 @@ class MealBooking extends React.Component {
       const userStore = this.context;
       this.setState({ loading: true });
       const _date = moment(date);
-      _date.hours(parseInt(time.split(':')[0]));
-      _date.minutes(parseInt(time.split(':')[1]));
-      const result = await OrderApi.add(userStore.hotelId, mealId, userStore.user.user._id, guests, _date);
-      this.setState({
-        loading: false,
-        modalTitle: mealName,
-        modalOpen: true,
-        modalText: this.getMealSummary(mealName, date, time)
-      });
+      _date.hours(parseInt(time.split(":")[0]));
+      _date.minutes(parseInt(time.split(":")[1]));
+      try {
+        const result = await OrderApi.add(
+          userStore.hotelId,
+          mealId,
+          userStore.user.user._id,
+          guests,
+          _date
+        );
+        this.setState({
+          loading: false,
+          modalTitle: mealName,
+          modalOpen: true,
+          modalText: this.getMealSummary(mealName, date, time),
+          success: true
+        });
+      } catch (e) {
+        this.setState({
+          loading: false,
+          modalOpen: true,
+          modalText: "לא ניתן להזמין שולחן לזמן זה"
+        });
+      }
     } catch (e) {
       console.log(e);
     }
@@ -69,7 +84,7 @@ class MealBooking extends React.Component {
 
   getMealSummary(mealName, date, time) {
     return `נשמר לך שולחן ב${mealName} \n
-    שעה ${time}, תאריך ${moment(date).format('DD/MM/YYYY')}. 
+    שעה ${time}, תאריך ${moment(date).format("DD/MM/YYYY")}. 
     להזכירך, השריון תקף לחצי שעה הראשונה של הארוחה בלבד
    `;
   }
@@ -87,7 +102,15 @@ class MealBooking extends React.Component {
   }
 
   render() {
-    const { guests, date, modalOpen, modalText, modalTitle, loading, time } = this.state;
+    const {
+      guests,
+      date,
+      modalOpen,
+      modalText,
+      modalTitle,
+      loading,
+      time
+    } = this.state;
     const { maxGuests, allowedDates, allowedTimes } = this.props;
 
     return (
@@ -98,10 +121,10 @@ class MealBooking extends React.Component {
               <Box>
                 <p>
                   אורח יקר,
-                <br />
+                  <br />
                   באפשרותך לשריין מקום לארוחה לפי תאריך, שעה ומספר סועדים.
                   לידיעתך, השריון תקף לחצי שעה הראשונה של הארוחה בלבד.
-              </p>
+                </p>
               </Box>
             </div>
             <Box>
@@ -126,7 +149,11 @@ class MealBooking extends React.Component {
               </Box>
               <Box>
                 <FormField title="בחר שעה">
-                  <Select items={allowedTimes} value={time} onChange={this.handleTimeChange} />
+                  <Select
+                    items={allowedTimes}
+                    value={time}
+                    onChange={this.handleTimeChange}
+                  />
                 </FormField>
               </Box>
               <Box>
@@ -138,7 +165,7 @@ class MealBooking extends React.Component {
             open={modalOpen}
             title={modalTitle}
             text={modalText}
-            onClose={() => this.setState({ modalOpen: false })}
+            onClose={() => this.props.onFinishedOrder(this.state.success)}
           />
         </div>
       </Loader>

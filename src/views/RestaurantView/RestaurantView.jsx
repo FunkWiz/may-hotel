@@ -4,9 +4,15 @@ import PageHeading from "../../components/PageHeading/PageHeading";
 import { metadata, names } from "./consts";
 import UserStore from "../../stores/UserStore";
 import { MealsApi } from "../../utils/api";
-import Loader from 'react-loader';
-import { getDateRangeByDate, generateTimes, getDateRange } from "../../utils/helpers";
+import Loader from "react-loader";
+import {
+  getDateRangeByDate,
+  generateTimes,
+  getDateRange
+} from "../../utils/helpers";
 import MealBooking from "../../components/MealBooking/MealBooking";
+import { Redirect } from "react-router-dom";
+import CouponsView from "../CouponsView/CouponsView";
 
 const RestaurantView = () => {
   const userStore = useContext(UserStore);
@@ -14,6 +20,8 @@ const RestaurantView = () => {
   const [meals, setMeals] = useState([]);
   const [meal, setMeal] = useState();
   const [room, setRoom] = useState();
+  const [goHome, setGoHome] = useState(false);
+  const [goCoupons, setGoCoupons] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -33,16 +41,19 @@ const RestaurantView = () => {
     })();
   }, []);
 
-  const handleLinkClick = useCallback(id => {
-    if (meal._id === id) return;
-    const _meal = meals.find(m => m._id === id);
-    const _meals = meals.map(m => ({
-      ...m,
-      selected: m._id === id
-    }));
-    setMeals(_meals);
-    setMeal(_meal);
-  }, [meal, meals]);
+  const handleLinkClick = useCallback(
+    id => {
+      if (meal._id === id) return;
+      const _meal = meals.find(m => m._id === id);
+      const _meals = meals.map(m => ({
+        ...m,
+        selected: m._id === id
+      }));
+      setMeals(_meals);
+      setMeal(_meal);
+    },
+    [meal, meals]
+  );
 
   const _pageLinks = meals.map(meal => ({
     title: names[meal.name.toLowerCase()] || meal.name,
@@ -50,19 +61,40 @@ const RestaurantView = () => {
     selected: meal.selected
   }));
 
-  const allowedTimes = meal ? generateTimes(parseInt(meal.startTime), parseInt(meal.endTime)) : ["08:00"];
-  const allowedDates = room ? getDateRangeByDate(new Date(), new Date(room.enddate))
+  const allowedTimes = meal
+    ? generateTimes(parseInt(meal.startTime), parseInt(meal.endTime))
+    : ["08:00"];
+  const allowedDates = room
+    ? getDateRangeByDate(new Date(), new Date(room.enddate))
     : getDateRange(new Date(), 5);
+
+  const onFinishedOrder = success => {
+    if (success) {
+      setGoHome(true);
+    }
+  };
+
+  if (goHome) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <Loader loaded={!loading}>
-      <PageHeading title={metadata.title} icon={metadata.icon} links={_pageLinks} isStatic onStaticClick={handleLinkClick} />
+      <PageHeading
+        title={metadata.title}
+        icon={metadata.icon}
+        links={_pageLinks}
+        isStatic
+        onStaticClick={handleLinkClick}
+      />
       <div className="restaurant-view">
         <MealBooking
           allowedTimes={allowedTimes}
           allowedDates={allowedDates}
           maxGuests={4}
-          mealId={meal ? meal._id : ''}
-          mealName={meal ? names[meal.name.toLowerCase()] : ''}
+          mealId={meal ? meal._id : ""}
+          mealName={meal ? names[meal.name.toLowerCase()] : ""}
+          onFinishedOrder={onFinishedOrder}
         />
       </div>
     </Loader>

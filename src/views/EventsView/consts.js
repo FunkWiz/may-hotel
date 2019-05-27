@@ -23,5 +23,6 @@ export const pageLinks = [
 export const eventTypes = {
   'kids': 'ילדים',
   'adults': 'מבוגרים',
-  'gambling': 'הימורים'
+  'gambling': 'הימורים',
+  'family': 'משפחה'
 }
