@@ -3,7 +3,7 @@ import Loader from "react-loader";
 import SiteModal from "../../../components/SiteModal/SiteModal";
 import Box from "../../../components/Box/Box";
 import UserStore from "../../../stores/UserStore";
-import { EventsApi, UserApi } from "../../../utils/api";
+import { EventsApi } from "../../../utils/api";
 import { getDateRange } from "../../../utils/helpers";
 import FormField from "../../../components/FormField/FormField";
 import Select from "../../../components/Select/Select";

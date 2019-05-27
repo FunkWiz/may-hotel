@@ -1,6 +1,12 @@
-import { missingItems } from "../../utils/icons";
+import { pool } from "../../utils/icons";
 
 export const metadata = {
   title: "ספא",
-  icon: missingItems
+  icon: pool
 };
+
+export const treatmentNames = [
+  "מסאז' ברגליים",
+  "מסאז' בגב",
+  "טיפולי פנים"
+]

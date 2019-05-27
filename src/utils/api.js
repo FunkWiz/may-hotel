@@ -39,7 +39,7 @@ const http = {
   delete: async (path, data) =>
     await axios.request({
       url: generateUrl(path),
-      method: 'DELETE',
+      method: "DELETE",
       data: data
     })
 };
@@ -106,7 +106,15 @@ export const MealsApi = {
 };
 
 export const SpaApi = {
-  get: async hotel_id => await http.get(`hotels/spa/${hotel_id}/available`)
+  get: async hotel_id => await http.get(`hotels/spa/${hotel_id}/available`),
+  add: async appointment_id =>
+    await http.post(
+      "hotels/spa/appointment",
+      {
+        appointment_id
+      },
+      true
+    )
 };
 
 export const VoucherApi = {
