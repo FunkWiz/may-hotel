@@ -148,8 +148,8 @@ const AllEvents = () => {
         {filteredEvents.length === 0 ? (
           <Box>לא נמצאו אירועים</Box>
         ) : (
-            <EventList events={filteredEvents} onItemClick={handleSubmit} />
-          )}
+          <EventList events={filteredEvents} onItemClick={handleSubmit} />
+        )}
       </Box>
       <SiteModal
         open={modalOpen}

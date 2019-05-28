@@ -7,7 +7,7 @@ import FormField from "../../components/FormField/FormField";
 import PageHeading from "../../components/PageHeading/PageHeading";
 import DatePicker from "../../components/DatePicker/DatePicker";
 import { getDateRangeByDate, getDateRange } from "../../utils/helpers";
-import moment from 'moment';
+import moment from "moment";
 import Select from "../../components/Select/Select";
 import { treatmentNames, metadata } from "./consts";
 import "./SpaView.scss";
@@ -27,7 +27,7 @@ const SpaView = () => {
   const [treatments, setTreatments] = useState([]);
   const [treatmentName, setTreatmentName] = useState(treatmentNames[0]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalText, setModalText] = useState('');
+  const [modalText, setModalText] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -41,44 +41,53 @@ const SpaView = () => {
     })();
   }, []);
 
-  const handleTreatmentClick = useCallback(id => {
-    (async () => {
-      setLoading(true);
-      try {
-        await SpaApi.add(id);
-        const treatment = treatments.find(t => t._id === id);
-        setSuccess(true);
-        setModalText(getTextSummary(treatment.therepist, treatment.string.date, treatment.string.time, treatmentName));
-        setModalOpen(true);
-      } catch (e) {
-        setModalText('לא ניתן להזמין את הטיפול');
-        setModalOpen(true);
-      }
-      setLoading(false);
-    })();
-  }, [treatments]);
+  const handleTreatmentClick = useCallback(
+    id => {
+      (async () => {
+        setLoading(true);
+        try {
+          await SpaApi.add(id);
+          const treatment = treatments.find(t => t._id === id);
+          setSuccess(true);
+          setModalText(
+            getTextSummary(
+              treatment.therepist,
+              treatment.string.date,
+              treatment.string.time,
+              treatmentName
+            )
+          );
+          setModalOpen(true);
+        } catch (e) {
+          setModalText("לא ניתן להזמין את הטיפול");
+          setModalOpen(true);
+        }
+        setLoading(false);
+      })();
+    },
+    [treatments]
+  );
 
   const handleDateChange = useCallback(date => {
     setDate(date);
   });
 
-  const allowedDates = room ? getDateRangeByDate(new Date(), new Date(room.enddate))
+  const allowedDates = room
+    ? getDateRangeByDate(new Date(), new Date(room.enddate))
     : getDateRange(new Date(), 5);
 
   const dateStr = moment(date).format("MM/DD/YYYY");
-  const _treatments = treatments.filter(treatment => moment(treatment.date).format("MM/DD/YYYY") === dateStr);
+  const _treatments = treatments.filter(
+    treatment => moment(treatment.date).format("MM/DD/YYYY") === dateStr
+  );
 
   if (redirect) {
-    return <Redirect to="/" />
+    return <Redirect to="/" />;
   }
 
   return (
     <Loader loaded={!loading}>
-      <PageHeading
-        icon={metadata.icon}
-        title={metadata.title}
-        links={[]}
-      />
+      <PageHeading icon={metadata.icon} title={metadata.title} links={[]} />
       <Box className="spa-view">
         <FormField title="בחר תאריך">
           <DatePicker
@@ -102,32 +111,34 @@ const SpaView = () => {
         open={modalOpen}
         text={modalText}
         title="ספא"
-        onClose={() => success ? setRedirect(true) : setModalOpen(false)}
+        onClose={() => (success ? setRedirect(true) : setModalOpen(false))}
       />
     </Loader>
   );
 };
 
 const SpaList = ({ list, onItemClick }) => {
-  if(!list || !list.length) {
-    return <span>לא נמצאו טיפולים לתאריך זה</span>
+  if (!list || !list.length) {
+    return <span>לא נמצאו טיפולים לתאריך זה</span>;
   }
   return (
     <ul>
-      {list.map((item, idx) => <SpaItem {...item} onClick={onItemClick} key={idx} />)}
+      {list.map((item, idx) => (
+        <SpaItem {...item} onClick={onItemClick} key={idx} />
+      ))}
     </ul>
-  )
-}
+  );
+};
 
 const SpaItem = ({ therepist, _id, onClick, string }) => {
   const _onClick = () => {
     onClick(_id);
-  }
+  };
   return (
     <li onClick={_onClick} className="spa-item">
       {therepist}, {string.time}
     </li>
-  )
-}
+  );
+};
 
 export default SpaView;

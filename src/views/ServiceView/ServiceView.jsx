@@ -12,7 +12,11 @@ const nestedRoutes = pageLinks.map(link => ({
 const ServiceView = () => {
   return (
     <>
-      <PageHeading title={metadata.title} icon={metadata.icon} links={pageLinks} />
+      <PageHeading
+        title={metadata.title}
+        icon={metadata.icon}
+        links={pageLinks}
+      />
       <div className="service-view">
         <RouteList routes={nestedRoutes} />
       </div>
