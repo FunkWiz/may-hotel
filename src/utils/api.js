@@ -58,7 +58,8 @@ export const UserApi = {
       address,
       phone
     }),
-  events: async () => await http.get("users/me/events", true)
+  events: async () => await http.get("users/me/events", true),
+  spa: async () => await http.get("users/me/spa", true)
 };
 
 export const OrderApi = {
@@ -78,6 +79,7 @@ export const RoomApi = {
 };
 
 export const ServiceApi = {
+  get: async hotel_id => await http.get(`hotels/rooms/services/${hotel_id}`),
   cleaning: async (room_id, date) =>
     await http.post("hotels/rooms/services/clean", { room_id, date }),
   wakeUp: async (room_id, date) =>
