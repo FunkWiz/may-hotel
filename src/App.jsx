@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import SignUpView from "./views/SignUpView/SignUpView";
 import LogoutView from "./views/LogoutView/LogoutView";
 import AnonymousRoute from "./components/Routes/AnonymousRoute";
+import MyOrders from "./views/RestaurantView/MyOrders";
 
 const browserHistory = createBrowserHistory();
 
@@ -26,7 +27,8 @@ const App = () => {
         <AnonymousRoute path="/login" component={LoginView} />
         <AnonymousRoute path="/signup" component={SignUpView} />
         <ProtectedRoute path="/" component={HomeView} exact />
-        <ProtectedRoute path="/restaurant" component={RestaurantView} />
+        <ProtectedRoute path="/restaurant" component={RestaurantView} exact />
+        <ProtectedRoute path="/restaurant/myorders" component={MyOrders} exact />
         <ProtectedRoute path="/room-service" component={ServiceView} />
         <ProtectedRoute path="/spa" component={SpaView} />
         <ProtectedRoute path="/events" component={EventsView} />

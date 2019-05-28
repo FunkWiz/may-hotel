@@ -45,13 +45,18 @@
   &:nth-child(2n) {
     background-color: $secondary;
   }
+
+  img {
+    margin: 0 auto;
+    display: block;
+    width: 92px;
+  }
 }
 
 .my-event-item-top {
   display: flex;
   justify-content: space-between;
   flex-direction: row-reverse;
-  align-items: center;
   margin-bottom: 10px;
 }
 
@@ -68,4 +73,16 @@
   font-size: 11px;
   text-align: center;
   line-height: 1.2;
+}
+
+.my-event-left {
+  text-align: left;
+
+  .cancel-button {
+    width: 24px;
+    height: 24px;
+    font-size: 17px;
+    line-height: 17px;
+    margin-bottom: 10px;
+  }
 }

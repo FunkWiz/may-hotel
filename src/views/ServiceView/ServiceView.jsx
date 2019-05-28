@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ServiceView.scss";
 import PageHeading from "../../components/PageHeading/PageHeading";
 import RouteList from "../../components/RouteList/RouteList";
@@ -10,6 +10,9 @@ const nestedRoutes = pageLinks.map(link => ({
 }));
 
 const ServiceView = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  })
   return (
     <>
       <PageHeading

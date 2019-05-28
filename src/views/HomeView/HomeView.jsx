@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./HomeView.scss";
 import { observer } from "mobx-react-lite";
 import Box from "../../components/Box/Box";
@@ -8,6 +8,10 @@ import lobbyImg from "../../static/images/hotel-lobby-2.jpg";
 
 const HomeView = () => {
   const menu = useContext(MenuStore);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  })
   return (
     <>
       <div className="home-upper" style={{ backgroundImage: `url(${lobbyImg})` }} />

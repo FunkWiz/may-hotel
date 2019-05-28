@@ -26,7 +26,6 @@ export const Coupons = ({ mealId, date }) => {
                 const result = await VoucherApi.add(mealId, user._id, moment(date).format('YYYYMMDD'), name);
                 const coupon = result.data.data;
                 setQrCode(coupon.qrcode);
-                await VoucherApi.delete(coupon._id);
                 setShowQrCode(true);
             } catch (e) {
                 setModalOpen(true);
@@ -35,6 +34,10 @@ export const Coupons = ({ mealId, date }) => {
             setLoading(false);
         })();
     })
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [loading])
 
     if (redirect) {
         return <Redirect to="/" />;
@@ -50,6 +53,15 @@ export const Coupons = ({ mealId, date }) => {
 
     return (
         <Loader loaded={!loading}>
+            <div className="disclaimer">
+                <Box>
+                    <p>
+                        אורח יקר,
+                  <br />
+                        לצערנו לא היה מקום בארוחה אליה רצית לשריין מקום כפיצוי, אנא בחר שובר לארוחה במלון. השירות הוא ללא עלות. השובר תקף למימוש ליום הארוחה אליה ניסית להזמין מקום ולפי מספר הנפשות בהזמנה.
+                </p>
+                </Box>
+            </div>
             <Box>
                 <CouponsList items={coupons} onItemClick={handleCouponClick} />
             </Box>

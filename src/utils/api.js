@@ -36,11 +36,12 @@ const http = {
       headers: getHeaders(auth)
     }),
   put: async (path, data) => await axios.put(generateUrl(path), data),
-  delete: async (path, data) =>
+  delete: async (path, data, auth = false) =>
     await axios.request({
       url: generateUrl(path),
       method: "DELETE",
-      data: data
+      data: data,
+      headers: getHeaders(auth)
     })
 };
 
@@ -59,19 +60,23 @@ export const UserApi = {
       phone
     }),
   events: async () => await http.get("users/me/events", true),
-  spa: async () => await http.get("users/me/spa", true)
+  spa: async () => await http.get("users/me/spa", true),
+  orders: async () => await http.get("users/me/orders", true)
 };
 
 export const OrderApi = {
-  add: async (hotel, meal, user, seats, date) =>
-    await http.post("hotels/tables/orders", {
-      meal,
-      user,
-      seats,
-      date,
-      hotel
-    }),
-  getAll: async hotelId => await http.get(`hotels/tables/all/${hotelId}`)
+  add: async (hotel, meal_id, amount, date) =>
+    await http.post(
+      "hotels/meals/orders",
+      {
+        meal_id,
+        amount,
+        date
+      },
+      true
+    ),
+  getAll: async hotelId => await http.get(`hotels/meals/all/${hotelId}`),
+  delete: async order_id => await http.delete(`hotels/meals/orders/${order_id}`, {}, true)
 };
 
 export const RoomApi = {
@@ -100,7 +105,9 @@ export const EventsApi = {
         amount
       },
       true
-    )
+    ),
+  delete: async reservation_id =>
+    http.delete(`hotels/events/reservation/${reservation_id}`, {}, true)
 };
 
 export const MealsApi = {
@@ -116,19 +123,21 @@ export const SpaApi = {
         appointment_id
       },
       true
-    )
+    ),
+  delete: async appointment_id =>
+    await http.delete(`hotels/spa/appointment/${appointment_id}`, {}, true)
 };
 
 export const VoucherApi = {
   add: async (meal_id, user_id, date, value) =>
-    await http.post(`hotels/tables/orders/vouchers`, {
+    await http.post(`hotels/meals/orders/vouchers`, {
       meal_id,
       user_id,
       date,
       value
     }),
   delete: async voucher_id =>
-    await http.delete(`hotels/tables/orders/vouchers`, {
+    await http.delete(`hotels/meals/orders/vouchers`, {
       voucher_id
     })
 };

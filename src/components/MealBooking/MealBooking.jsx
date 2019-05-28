@@ -12,6 +12,7 @@ import SiteModal from "../SiteModal/SiteModal";
 import Loader from "react-loader";
 import moment from "moment";
 import { OrderApi } from "../../utils/api";
+import { Link } from 'react-router-dom';
 
 class MealBooking extends React.Component {
   constructor(props) {
@@ -55,7 +56,6 @@ class MealBooking extends React.Component {
         await OrderApi.add(
           userStore.hotelId,
           mealId,
-          userStore.user.user._id,
           guests,
           _date
         );
@@ -117,13 +117,15 @@ class MealBooking extends React.Component {
       <Loader loaded={!loading}>
         <div className="meal-booking">
           <Form onSubmit={this.handleFormSubmit}>
-            <div className="meal-disclaimer">
+            <div className="disclaimer">
               <Box>
                 <p>
                   אורח יקר,
                   <br />
                   באפשרותך לשריין מקום לארוחה לפי תאריך, שעה ומספר סועדים.
                   לידיעתך, השריון תקף לחצי שעה הראשונה של הארוחה בלבד.
+                  <br />
+                  <Link to="/restaurant/myorders">ההזמנות שלי</Link>
                 </p>
               </Box>
             </div>

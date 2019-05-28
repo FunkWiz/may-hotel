@@ -25,6 +25,7 @@ const RestaurantView = () => {
   const [couponData, setCouponData] = useState({});
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     (async () => {
       setLoading(true);
       try {
@@ -84,7 +85,7 @@ const RestaurantView = () => {
   }
 
   if (goHome) {
-    return <Redirect to="/" />;
+    return <Redirect to="/restaurant/myorders" />;
   }
 
   return (
@@ -100,7 +101,7 @@ const RestaurantView = () => {
         <MealBooking
           allowedTimes={allowedTimes}
           allowedDates={allowedDates}
-          maxGuests={4}
+          maxGuests={room ? room.guest_amount : 1}
           mealId={meal ? meal._id : ""}
           mealName={meal ? names[meal.name.toLowerCase()] : ""}
           onFinishedOrder={onFinishedOrder}

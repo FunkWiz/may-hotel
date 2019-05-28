@@ -2,7 +2,10 @@ import React, { useEffect, useState, useCallback, useContext } from "react";
 import Loader from "react-loader";
 import UserStore from "../../stores/UserStore";
 import { treatmentNames } from "./consts";
-import { UserApi } from "../../utils/api";
+import { UserApi, SpaApi } from "../../utils/api";
+import Box from "../../components/Box/Box";
+import CancelButton from "../../components/CancelButton/CancelButton";
+import SiteModal from "../../components/SiteModal/SiteModal";
 
 const MySpa = () => {
   const userStore = useContext(UserStore);
@@ -25,33 +28,19 @@ const MySpa = () => {
     (async () => {
       setLoading(true);
       const result = await UserApi.spa();
-      setTreatments(result.data.data);
+      setTreatments(result.data.data.map(treatment => treatment.appointment));
       setLoading(false);
     })();
   });
 
-  const handleTreatmentClick = useCallback(
-    (id, action) => {
+  const handleTreatmentCancel = useCallback(
+    (id) => {
       (async () => {
         setLoading(true);
-        try {
-          await SpaApi.add(id);
-          const treatment = treatments.find(t => t._id === id);
-          setSuccess(true);
-          setModalText(
-            getTextSummary(
-              treatment.therepist,
-              treatment.string.date,
-              treatment.string.time,
-              treatmentName
-            )
-          );
-          setModalOpen(true);
-        } catch (e) {
-          setModalText("לא ניתן להזמין את הטיפול");
-          setModalOpen(true);
-        }
-        setLoading(false);
+        await SpaApi.delete(id);
+        updateTreatments();
+        setModalText('טיפול בוטל בהצלחה!');
+        setModalOpen(true);
       })();
     },
     [treatments]
@@ -60,32 +49,39 @@ const MySpa = () => {
   return (
     <Box>
       <Loader loaded={!loading}>
-        <MySpaList list={treatments} onItemClick={handleTreatmentClick} />
+        <MySpaList list={treatments} onItemCancel={handleTreatmentCancel} />
       </Loader>
+      <SiteModal
+        open={modalOpen}
+        title="הטיפולים שלי"
+        text={modalText}
+        onClose={() => setModalOpen(false)}
+      />
     </Box>
   );
 };
 
-const MySpaList = ({ list, onItemClick }) => {
+const MySpaList = ({ list, onItemCancel }) => {
   if (!list || !list.length) {
-    return <span>לא נמצאו טיפולים לתאריך זה</span>;
+    return <span>לא נמצאו טיפולים</span>;
   }
   return (
     <ul>
       {list.map((item, idx) => (
-        <MySpaItem {...item} onClick={onItemClick} key={idx} />
+        <MySpaItem {...item} onCancel={onItemCancel} key={idx} />
       ))}
     </ul>
   );
 };
 
-const MySpaItem = ({ therepist, _id, onClick, string }) => {
-  const _onClick = () => {
-    onClick(_id);
-  };
+const MySpaItem = ({ therepist, _id, onCancel, string }) => {
   return (
-    <li onClick={_onClick} className="my-spa-item">
-      {therepist}, {string.time}
+    <li className="my-spa-item">
+      <div>
+        {therepist}<br />
+        {string.date},{' '}{string.time}
+      </div>
+      <CancelButton onClick={() => onCancel(_id)} />
     </li>
   );
 };

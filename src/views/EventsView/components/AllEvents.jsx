@@ -33,7 +33,7 @@ const AllEvents = () => {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
-  const [date, setDate] = useState(allowedDates[0]);
+  const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState("");
   let [filteredEvents, setFilteredEvents] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -110,8 +110,8 @@ const AllEvents = () => {
         setCategory(currentCategory);
         const _dates = _events.map(ev => ev.string.date).filter(onlyUnique);
         setAllowedDates(_dates.map(x => moment(x, dateFormat).toDate()));
-        setDate(moment(_dates[0], dateFormat).toDate());
-        setFilteredEvents(filterEvents(_events, currentCategory, _dates[0]));
+        setDate(new Date());
+        setFilteredEvents(filterEvents(_events, currentCategory, moment(new Date()).format(dateFormat)));
       } catch (e) {
         setEvents(null);
       }
@@ -148,8 +148,8 @@ const AllEvents = () => {
         {filteredEvents.length === 0 ? (
           <Box>לא נמצאו אירועים</Box>
         ) : (
-          <EventList events={filteredEvents} onItemClick={handleSubmit} />
-        )}
+            <EventList events={filteredEvents} onItemClick={handleSubmit} />
+          )}
       </Box>
       <SiteModal
         open={modalOpen}

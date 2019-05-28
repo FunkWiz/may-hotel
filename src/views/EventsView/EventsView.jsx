@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React, { useEffect } from "react";
 import Box from "../../components/Box/Box";
 import { metadata, pageLinks } from "./consts";
 import PageHeading from "../../components/PageHeading/PageHeading";
@@ -11,6 +11,9 @@ const nestedRoutes = pageLinks.map(link => ({
 }));
 
 const EventsView = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
   return (
     <>
       <PageHeading title={metadata.title} icon={metadata.icon} links={pageLinks} />
