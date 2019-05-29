@@ -1,11 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { UserApi, OrderApi } from "../../utils/api";
 import Loader from "react-loader";
-import Box from "../../components/Box/Box";
 import CancelButton from "../../components/CancelButton/CancelButton";
 import SiteModal from "../../components/SiteModal/SiteModal";
-import PageHeading from "../../components/PageHeading/PageHeading";
-import { metadata } from "./consts";
 import moment from 'moment';
 
 const MyOrders = () => {
@@ -26,7 +23,7 @@ const MyOrders = () => {
         (async () => {
             setLoading(true);
             const result = await UserApi.orders();
-            const _orders = result.data.data.map(order => ({
+            const _orders = result.data.data.filter(order => order.order != null).map(order => ({
                 ...order.order,
                 time: moment(order.date).format("hh:mm")
             }));
@@ -46,22 +43,15 @@ const MyOrders = () => {
 
     return (
         <>
-            <PageHeading
-                icon={metadata.icon}
+            <Loader loaded={!loading}>
+                <MyOrderList orders={orders} onCancel={handleCancel} />
+            </Loader>
+            <SiteModal
+                open={modalOpen}
                 title="ההזמנות שלי"
-                links={[]}
+                text="הזמנה בוטלה בהצלחה!"
+                onClose={() => setModalOpen(false)}
             />
-            <Box>
-                <Loader loaded={!loading}>
-                    <MyOrderList orders={orders} onCancel={handleCancel} />
-                </Loader>
-                <SiteModal
-                    open={modalOpen}
-                    title="ההזמנות שלי"
-                    text="הזמנה בוטלה בהצלחה!"
-                    onClose={() => setModalOpen(false)}
-                />
-            </Box>
         </>
     );
 };
@@ -80,14 +70,17 @@ const MyOrderList = ({ orders, onCancel }) => {
     );
 }
 
-const MyOrderItem = ({ _id, qrcode, string, amount, onCancel, time }) => {
+const MyOrderItem = ({ _id, qrcode, string, amount, onCancel, event, time }) => {
     return (
         <li className="my-order-item">
             <div>
-                מס' סועדים: {amount}<br />
-                {string.date},{' '}{time}
+                <div>
+                    מס' סועדים: {amount}<br />
+                    {string.date},{' '}{time}
+                </div>
+                <CancelButton onClick={() => onCancel(_id)} />
             </div>
-            <CancelButton onClick={() => onCancel(_id)} />
+            <img src={qrcode} />
         </li>
     );
 };

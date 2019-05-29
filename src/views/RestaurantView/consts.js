@@ -1,4 +1,6 @@
 import { breakfast } from "../../utils/icons";
+import MyOrders from "./MyOrders";
+import MyCoupons from "../Coupons/MyCoupons";
 
 export const metadata = {
   title: "חדר אוכל",
@@ -10,3 +12,16 @@ export const names = {
   lunch: "ארוחת צהריים",
   dinner: "ארוחת ערב"
 };
+
+export const ordersPageLinks = [
+  {
+    title: "חדר אוכל",
+    component: MyOrders,
+    path: "/orders/myorders"
+  },
+  {
+    title: "קופונים",
+    component: MyCoupons,
+    path: "/orders/coupons"
+  }
+];

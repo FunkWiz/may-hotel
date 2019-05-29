@@ -52,3 +52,27 @@
   line-height: 1.2;
   font-size: 14px;
 }
+
+.my-coupon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $secondary;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  &:nth-child(2n) {
+    background-color: $green;
+  }
+  display: flex;
+  justify-content: space-between;
+  > * {
+    margin: 0 5px;
+    flex: 1;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}

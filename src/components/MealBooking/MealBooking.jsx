@@ -125,7 +125,7 @@ class MealBooking extends React.Component {
                   באפשרותך לשריין מקום לארוחה לפי תאריך, שעה ומספר סועדים.
                   לידיעתך, השריון תקף לחצי שעה הראשונה של הארוחה בלבד.
                   <br />
-                  <Link to="/restaurant/myorders">ההזמנות שלי</Link>
+                  <Link to="/orders/myorders">ההזמנות שלי</Link>
                 </p>
               </Box>
             </div>

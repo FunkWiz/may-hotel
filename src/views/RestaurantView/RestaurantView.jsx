@@ -85,7 +85,7 @@ const RestaurantView = () => {
   }
 
   if (goHome) {
-    return <Redirect to="/restaurant/myorders" />;
+    return <Redirect to="/orders/myorders" />;
   }
 
   return (

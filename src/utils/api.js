@@ -61,7 +61,8 @@ export const UserApi = {
     }),
   events: async () => await http.get("users/me/events", true),
   spa: async () => await http.get("users/me/spa", true),
-  orders: async () => await http.get("users/me/orders", true)
+  orders: async () => await http.get("users/me/orders", true),
+  vouchers: async () => await http.get("users/me/vouchers", true)
 };
 
 export const OrderApi = {
