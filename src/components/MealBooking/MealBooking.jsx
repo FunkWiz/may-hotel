@@ -12,7 +12,7 @@ import SiteModal from "../SiteModal/SiteModal";
 import Loader from "react-loader";
 import moment from "moment";
 import { OrderApi } from "../../utils/api";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 class MealBooking extends React.Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class MealBooking extends React.Component {
       const { mealName, mealId } = this.props;
       const userStore = this.context;
       this.setState({ loading: true });
-      const _date = moment(date).format('MM/DD/YYYY');
+      const _date = moment(date).format("MM/DD/YYYY");
       // _date.hours(parseInt(time.split(":")[0]));
       // _date.minutes(parseInt(time.split(":")[1]));
       try {
@@ -60,6 +60,14 @@ class MealBooking extends React.Component {
           _date
         );
 
+        if (result.data.voucher) {
+          this.setState({
+            loading: false,
+            modalOpen: true,
+            modalText: "לא ניתן להזמין שולחן לזמן זה"
+          });
+          return;
+        }
         this.setState({
           loading: false,
           modalTitle: mealName,
@@ -168,10 +176,12 @@ class MealBooking extends React.Component {
             open={modalOpen}
             title={modalTitle}
             text={modalText}
-            onClose={() => this.props.onFinishedOrder(this.state.success, {
-              mealId,
-              date
-            })}
+            onClose={() =>
+              this.props.onFinishedOrder(this.state.success, {
+                mealId,
+                date
+              })
+            }
           />
         </div>
       </Loader>
