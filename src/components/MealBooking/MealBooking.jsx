@@ -59,8 +59,7 @@ class MealBooking extends React.Component {
           guests,
           _date
         );
-
-        if (result.data.voucher) {
+        if (result.data.data.voucher) {
           this.setState({
             loading: false,
             modalOpen: true,
