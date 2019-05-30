@@ -5,6 +5,15 @@
 }
 .page-heading-top {
   padding: 10px;
+  a {
+    font-size: 14px;
+    font-weight:600;
+    &,
+    &:hover,
+    &:visited {
+      color: $green;
+    }
+  }
 }
 
 .page-heading-top-icon {
@@ -44,7 +53,8 @@
     border-left: 1px solid $secondary;
   }
 
-  a, span {
+  a,
+  span {
     display: block;
     height: 100%;
     font-size: 16px;

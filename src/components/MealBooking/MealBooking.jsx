@@ -119,7 +119,13 @@ class MealBooking extends React.Component {
       loading,
       time
     } = this.state;
-    const { maxGuests, allowedDates, allowedTimes, mealId } = this.props;
+    const {
+      maxGuests,
+      allowedDates,
+      allowedTimes,
+      mealId,
+      mealName
+    } = this.props;
 
     return (
       <Loader loaded={!loading}>
@@ -132,6 +138,11 @@ class MealBooking extends React.Component {
                   <br />
                   באפשרותך לשריין מקום לארוחה לפי תאריך, שעה ומספר סועדים.
                   לידיעתך, השריון תקף לחצי שעה הראשונה של הארוחה בלבד.
+                  <br />
+                  שעות פעילות ב{mealName}:{" "}
+                  <strong>
+                    {allowedTimes[0]} - {allowedTimes[allowedTimes.length - 2]}
+                  </strong>
                   <br />
                   <Link to="/orders/myorders">ההזמנות שלי</Link>
                 </p>
@@ -157,7 +168,7 @@ class MealBooking extends React.Component {
                   />
                 </FormField>
               </Box>
-              <Box>
+              {/* <Box>
                 <FormField title="בחר שעה">
                   <Select
                     items={allowedTimes}
@@ -165,7 +176,7 @@ class MealBooking extends React.Component {
                     onChange={this.handleTimeChange}
                   />
                 </FormField>
-              </Box>
+              </Box> */}
               <Box>
                 <SubmitButton>הזמן</SubmitButton>
               </Box>

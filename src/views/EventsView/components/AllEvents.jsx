@@ -4,7 +4,7 @@ import SiteModal from "../../../components/SiteModal/SiteModal";
 import Box from "../../../components/Box/Box";
 import UserStore from "../../../stores/UserStore";
 import { EventsApi } from "../../../utils/api";
-import { getDateRange } from "../../../utils/helpers";
+import { getDateRange, generateNormalizedArray } from "../../../utils/helpers";
 import FormField from "../../../components/FormField/FormField";
 import Select from "../../../components/Select/Select";
 import DatePicker from "../../../components/DatePicker/DatePicker";
@@ -29,6 +29,8 @@ const AllEvents = () => {
   const [allowedDates, setAllowedDates] = useState(
     getDateRange(new Date(), 10)
   );
+  const [guests, setGuests] = useState(1);
+  const [room, setRoom] = useState();
   const [success, setSuccess] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -47,7 +49,7 @@ const AllEvents = () => {
       const _event = events.find(ev => ev._id === id);
       setLoading(true);
       try {
-        await EventsApi.add(_event._id, 1);
+        await EventsApi.add(_event._id, guests);
         await userStore.updateUser();
         setModalText("נרשמת לאירוע בהצלחה!");
         setModalOpen(true);
@@ -58,7 +60,7 @@ const AllEvents = () => {
       }
       setLoading(false);
     },
-    [events]
+    [events, guests]
   );
 
   const filterEvents = (_events, _category, _date) => {
@@ -111,7 +113,16 @@ const AllEvents = () => {
         const _dates = _events.map(ev => ev.string.date).filter(onlyUnique);
         setAllowedDates(_dates.map(x => moment(x, dateFormat).toDate()));
         setDate(new Date());
-        setFilteredEvents(filterEvents(_events, currentCategory, moment(new Date()).format(dateFormat)));
+        setFilteredEvents(
+          filterEvents(
+            _events,
+            currentCategory,
+            moment(new Date()).format(dateFormat)
+          )
+        );
+
+        const room = await userStore.getRoomData();
+        setRoom(room);
       } catch (e) {
         setEvents(null);
       }
@@ -136,6 +147,13 @@ const AllEvents = () => {
               onChange={handleCategoryChange}
             />
           </FormField>
+          <FormField title="כמות משתתפים">
+            <Select
+              items={generateNormalizedArray(room ? room.guest_amount : 1)}
+              value={guests}
+              onChange={event => setGuests(event.target.value)}
+            />
+          </FormField>
           <FormField title="בחר תאריך">
             <DatePicker
               selected={date}
@@ -144,12 +162,11 @@ const AllEvents = () => {
             />
           </FormField>
         </Box>
-
         {filteredEvents.length === 0 ? (
           <Box>לא נמצאו אירועים</Box>
         ) : (
-            <EventList events={filteredEvents} onItemClick={handleSubmit} />
-          )}
+          <EventList events={filteredEvents} onItemClick={handleSubmit} />
+        )}
       </Box>
       <SiteModal
         open={modalOpen}
