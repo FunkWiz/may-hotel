@@ -49,16 +49,17 @@ class MealBooking extends React.Component {
       const { mealName, mealId } = this.props;
       const userStore = this.context;
       this.setState({ loading: true });
-      const _date = moment(date);
-      _date.hours(parseInt(time.split(":")[0]));
-      _date.minutes(parseInt(time.split(":")[1]));
+      const _date = moment(date).format('MM/DD/YYYY');
+      // _date.hours(parseInt(time.split(":")[0]));
+      // _date.minutes(parseInt(time.split(":")[1]));
       try {
-        await OrderApi.add(
+        const result = await OrderApi.add(
           userStore.hotelId,
           mealId,
           guests,
           _date
         );
+
         this.setState({
           loading: false,
           modalTitle: mealName,
