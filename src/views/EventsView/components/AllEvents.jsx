@@ -12,6 +12,7 @@ import { eventTypes } from "../consts";
 import moment from "moment";
 import classNames from "classnames";
 import { Redirect } from "react-router-dom";
+import 'array-flat-polyfill';
 
 const dateFormat = "DD/MM/YYYY";
 function onlyUnique(value, index, self) {
